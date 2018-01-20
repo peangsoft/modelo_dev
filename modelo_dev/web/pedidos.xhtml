@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head_adm.xhtml" />
+
+    <h:body class="background-dark">
+        <f:event listener="#{requisicaoCDI.listar_requisicao(login.idlocal)}" type="preRenderView"/>
+        <!-- FIM DO MENU -->
+        <div class="wrap" style="font-family: tahoma;font-size:11px">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:form id="frm2">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Visualizar/Aprovar os pedidos</div>
+                                <div class="panel-body">
+
+                                    <div class="table-responsive">
+
+                                        <p:messages id="msg" autoUpdate="true"/>                               
+                                        <p:growl id="msg1" autoUpdate="true" showDetail="true" life="2500"/>
+
+                                        <p:contextMenu for="tabelaProdutos">
+                                            <p:menuitem value="Ver" icon="ui-icon-search" oncomplete="PF('documentDialog').show()"/>
+                                            <p:menuitem value="Eliminar"  update="tabelaProdutos" icon="ui-icon-close"/>
+                                        </p:contextMenu>
+
+                                        <p:dataTable value="#{requisicaoCDI.requisicaes}" 
+                                                     var="requisicao" 
+                                                     paginator="true" 
+                                                     rows="15"
+                                                     rowsPerPageTemplate="10,15,20,30,50" 
+                                                     emptyMessage="Não há pedidos"
+                                                     paginatorPosition="bottom" 
+                                                     id="tabelaProdutos" 
+                                                     widgetVar="tabelaProdutos" class="table-responsive"
+                                                     style="font-family: tahoma;font-size:11px">
+
+                                            <f:facet name="header">
+
+                                                <p:commandButton id="toggler" type="button" value="Campos" style="float:right" icon="ui-icon-calculator"  />
+                                                <p:columnToggler datasource="tabelaProdutos" trigger="toggler" />
+
+                                                <p:outputPanel style="float:left">
+                                                    <h:outputText value="Procurar na tabela: " />
+                                                    <p:inputText id="globalFilter" onkeyup="PF('tabelaProdutos').filter()" style="width:170px" placeholder="Palavra chave"/>
+                                                </p:outputPanel>
+
+                                                <p:panelGrid columns="2">               
+                                                    <h:commandLink title="Tudo">
+                                                        <p:graphicImage value="img/logoPdf.png" height="32" width="32"  />                                 
+                                                        <p:dataExporter type="pdf" target="tabelaProdutos" fileName="Materiais"  />
+                                                    </h:commandLink>
+
+                                                    <h:commandLink title="Tudo">
+                                                        <p:graphicImage value="img/logoxls.png" height="32" width="32"  />                                 
+                                                        <p:dataExporter type="xls" target="tabelaProdutos" fileName="Materiais" />
+                                                    </h:commandLink>
+
+                                                </p:panelGrid>
+
+                                            </f:facet>
+
+
+                                            <p:column headerText="ID">
+
+                                                <h:outputText value="#{requisicao.id}" />
+
+
+                                            </p:column>
+
+                                            <p:column headerText="Requerente" filterBy="#{requisicao.requerente}" filterMatchMode="contains">
+
+                                                <p:link outcome="perfilrequerente_adm" value="#{requisicao.requerente}" style="font-family: sans-serif;color: dodgerblue">
+                                                    <f:param name="user" value="#{requisicao.requerente}" />
+                                                </p:link>
+                                            </p:column>
+
+
+                                            <p:column headerText="Data/Hora do pedido" filterBy="#{requisicao.data_hora}" filterMatchMode="contains">
+                                                <h:outputText value="#{requisicao.data_hora}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Estado">
+                                                <h:outputText value="#{requisicao.estado}" style="color: #f66"/>
+                                            </p:column>
+
+
+                                            <p:column headerText=""  style="background-color: white">
+
+                                                <p:button outcome="detalhePedido" value="Tratar" title="Ver/Tratar do pedido" class="bt btn-primary">
+                                                    <f:param name="pedidoId" value="#{requisicao.id}" />
+                                                    <f:param name="requerente" value="#{requisicao.requerente}" />
+                                                </p:button>  
+
+                                                <p:commandButton id="cmdCncelar" actionListener="#{requisicaoCDI.mudar_estado_requisicao(requisicao.id, 'Cancelado')}" icon="ui-icon-circle-close" style="background-color: transparent" update="tabelaProdutos" title="Cancelar este pedido">
+                                                    <p:confirm header="Confirmação" message="Tem certeza que deseja cancelar este pedido?"  icon="ui-icon-closethick" />
+                                                </p:commandButton> 
+
+                                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                </p:confirmDialog>
+
+
+                                            </p:column>
+
+
+                                        </p:dataTable>
+
+                                        <p:panelGrid columns="2">
+                                            <h:commandLink title="Página atual apenas">
+                                                <p:graphicImage value="img/logoPdf.png" height="32" width="32"  />                                 
+                                                <p:dataExporter type="pdf" target="tabelaProdutos" fileName="Artigos" pageOnly="true" />
+                                            </h:commandLink>
+
+                                            <h:commandLink title="Página atual apenas" >
+                                                <p:graphicImage value="img/logoxls.png" height="32" width="32"  />                                 
+                                                <p:dataExporter type="xls" target="tabelaProdutos" fileName="Artigos" pageOnly="true" />
+                                            </h:commandLink>
+
+                                        </p:panelGrid>
+
+                                        <p:separator/>
+
+                                        <a href="javascript:window.history.go(-1)" title="Voltar a página principal">
+                                            <img src="img/Back.png" width="32" height="32" alt="clip"/>
+                                        </a>
+
+                                        <a href="pessoaNova.xhtml" title="Fazer uma requisição">
+                                            <img src="img/add.png" width="32" height="32" alt="add"/>
+                                        </a>
+
+                                        <a href="index_adm.xhtml" title="Voltar na página principal">
+                                            <img src="img/home.png" width="32" height="32" alt="clip"/>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+
+                    </div>
+
+                   
+                </div>
+            </div>
+           
+        </div>
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
+

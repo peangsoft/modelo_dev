@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head.xhtml" />
+
+    <f:metadata>
+        <f:viewParam name="user" value="#{utilizadorCDI.utilizador.email}" />
+    </f:metadata>
+
+    <f:event listener="#{utilizadorCDI.Listautilizador(utilizadorCDI.utilizador.email)}" type="preRenderView"/>
+    <f:event listener="#{utilizadorCDI.NOME_departamentos()}" type="preRenderView"/>
+    <f:event listener="#{utilizadorCDI.NOME_locais()}" type="preRenderView"/>
+
+
+    <h:body class="background-dark">
+
+        <!-- FIM DO MENU -->
+
+        <div class="wrap" style="font-family: tahoma;font-size:11px">
+            <ui:include src="perfil_user.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:form id="alterarperfil">
+ 
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Atenção: Só é possivel alterar o departamento e o Local</div>
+                                <div class="panel-body">
+
+                                    <p:messages autoUpdate="true"/>
+
+                                    <div class="table-responsive">
+                                        <h:panelGrid columns="1" >
+                                            <img src="#{utilizadorCDI.utilizador.foto}" class="img-rounded" width="100" height="100"/>
+                                        </h:panelGrid>
+                                        <table class="table">
+                                            <tr>
+                                                <td><p:outputLabel value="Nome de utilizador:" /></td>
+
+                                            <td> <h:outputLabel value="#{utilizadorCDI.utilizador.nome_proprio}"/></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><p:outputLabel value="Email:" /></td>
+
+                                            <td> <h:outputLabel value="#{utilizadorCDI.utilizador.email}"/></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><p:outputLabel value="Departamento:" /></td>
+
+                                            <td> 
+                                            <p:selectOneMenu value="#{utilizadorCDI.utilizador.departamento}" id="periocidade" >
+                                                <f:selectItem itemLabel="#{utilizadorCDI.utilizador.departamento}"  itemValue="#{utilizadorCDI.utilizador.departamento}" />
+                                                <f:selectItems value="#{utilizadorCDI.departamentos}" />
+                                            </p:selectOneMenu>
+                                            </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><p:outputLabel value="Local:" /></td>
+
+                                            <td> 
+                                            <p:selectOneMenu value="#{utilizadorCDI.utilizador.local}" id="local">
+                                                <f:selectItem itemLabel="#{utilizadorCDI.utilizador.local}"  itemValue="#{utilizadorCDI.utilizador.local}" />
+                                                <f:selectItems value="#{utilizadorCDI.locais}" />                                 
+                                            </p:selectOneMenu>
+                                            </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+
+                                    <p:separator/>
+
+                                    <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+                                        <h:commandButton value="Guardar alteração" id="btalterar" action="#{utilizadorCDI.alterar()}"
+                                                         class="btn btn-primary"></h:commandButton>
+
+                                        <h:commandButton value="Cancelar" id="btcancelar" action="#{utilizadorCDI.cancelarEditperssoa()}"
+                                                         class="btn btn-warning"></h:commandButton>
+
+                                    </h:panelGrid>
+
+                                    <br/>
+                                    <br/>
+
+                                    <a href="javascript:window.history.go(-1)" title="Voltar a página principal">
+                                        <img src="img/Back.png" width="32" height="32" alt="clip"/>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </h:form>
+
+                    </div>
+
+
+                    <div class="row">
+
+                    </div> 
+                </div>
+            </div>
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
+        </div>
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+</html>
+

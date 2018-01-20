@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head_adm.xhtml" />
+
+    <f:metadata>
+        <f:viewParam name="user" value="#{utilizadorCDI.utilizador.email}" />
+    </f:metadata>
+
+    <f:event listener="#{utilizadorCDI.Listautilizador(utilizadorCDI.utilizador.email)}" type="preRenderView"/>
+    <f:event listener="#{utilizadorCDI.NOME_departamentos()}" type="preRenderView"/>
+    <f:event listener="#{utilizadorCDI.NOME_locais()}" type="preRenderView"/>
+
+
+    <h:body class="background-dark">
+
+        <!-- FIM DO MENU -->
+
+        <div class="wrap">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <h:form id="alterarperfil">
+                            <p:growl id="growl" showDetail="false" sticky="false" life="2500"/>
+
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Só é possivel alterar o departamento</div>
+                                <div class="panel-body">
+                                    <p:messages autoUpdate="true"/>
+                                    <p:panelGrid columns="2" style="background-color: transparent">
+
+                                        <p:panelGrid columns="2" style="background-color: transparent">
+
+                                            <p:outputLabel value="Nome de utilizador:" />
+                                            <h:outputLabel value="#{utilizadorCDI.utilizador.nome_proprio}"  />
+
+
+                                            <h:outputLabel for="email" value="Email:" />                                 
+                                            <h:outputLabel value="#{utilizadorCDI.utilizador.email}" />
+
+
+                                            <p:outputLabel value="Departamento" />
+                                            <p:selectOneMenu value="#{utilizadorCDI.utilizador.departamento}" id="periocidade" effect="fold" editable="true">
+                                                <f:selectItem itemLabel="#{utilizadorCDI.utilizador.departamento}"  itemValue="#{utilizadorCDI.utilizador.departamento}" />
+                                                <f:selectItems value="#{utilizadorCDI.departamentos}" />
+                                            </p:selectOneMenu>
+
+                                            <p:outputLabel value="Local:" />
+                                            <p:selectOneMenu value="#{utilizadorCDI.utilizador.local}" id="local" effect="fold" editable="false">
+                                                <f:selectItem itemLabel="#{utilizadorCDI.utilizador.local}"  itemValue="#{utilizadorCDI.utilizador.local}" />
+                                                <f:selectItems value="#{utilizadorCDI.locais}" />                                 
+                                            </p:selectOneMenu>
+
+
+                                        </p:panelGrid>
+                                        <h:panelGrid columns="1">
+                                            <img src="#{utilizadorCDI.utilizador.foto}" width="130" height="130"/>
+
+                                        </h:panelGrid>
+                                    </p:panelGrid>
+                                    <br/>
+                                    <p:separator/>
+
+                                    <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+                                        <h:commandButton id="btalterar" action="#{utilizadorCDI.alterar()}"
+                                                         style="display: none"></h:commandButton>
+
+                                        <h:commandButton id="btcancelar"
+                                                         style="display: none"></h:commandButton>
+
+                                    </h:panelGrid>
+
+
+                                    <button type="submit" id="alterarperfil:btalterar" name="alterarperfil:btalterar" class="btn btn-primary btn-lg">
+                                        Guardar alteração
+                                    </button>
+
+                                    <button type="submit" id="alterarperfil:btcancelar" name="alterarperfil:btcancelar" class="btn btn-warning btn-lg">
+                                        Cancelar
+                                    </button>
+                                    <br/>
+                                    <br/>
+
+                                    <a href="javascript:window.history.go(-1)" title="Voltar a página principal">
+                                        <img src="img/Back.png" width="32" height="32" alt="clip"/>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </h:form>
+
+                    </div>
+
+
+                    <div class="row">
+
+                    </div> 
+                </div>
+            </div>
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
+        </div>
+
+
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+</html>
+

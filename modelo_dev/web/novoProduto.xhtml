@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head_adm.xhtml" />
+
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="procurar" value="#{categoriaCDI.pesquisa}" />
+        </f:metadata>
+
+        <f:event listener="#{categoriaCDI.listar_categoria(categoriaCDI.pesquisa)}" type="preRenderView"/>    
+
+        <!-- FIM DO MENU -->
+
+
+              <div class="wrap" style="font-family: tahoma;font-size:11px">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:form id="frm1">
+                                <div class="panel panel-primary">
+                                <div class="panel-heading">Inserir novo produto no stock</div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                    <p:messages showDetail="true" autoUpdate="true"/>
+
+                                    <p:wizard flowListener="#{produtoCDI.onFlowProcess}" style="font-family: tahoma;font-size:11px">
+
+                                        <p:tab id="contratotab1" title="Informação"  >
+
+                                            <p:separator/>
+                                            <p:outputLabel value="Filtros (Palavra chave ou modelo ou fornecedor)" style="color: #0055cc" /><br/>
+
+                                            <h:panelGrid columns="3" >
+                                                <p:inputText id="procurar" value="#{categoriaCDI.pesquisa}"  />
+                                                <p:commandButton actionListener="#{categoriaCDI.listar_categoria(categoriaCDI.pesquisa)}" update="artigo,categoria,pesquisado" value="Pesquisar" id="pesquisar1" icon="ui-icon-search" class="bt btn-primary " />
+                                                <p:outputLabel id="pesquisado" value=" (#{categoriaCDI.categorias.size()} Itens encontrados)" style="color: green"  />
+                                            </h:panelGrid><br/>
+
+                                            <h:panelGrid columns="3" style="width: 100%;border-width: thin ;border-color: #E6E6E6" >
+
+                                                <p:outputLabel id="artigo" value="Artigos (#{categoriaCDI.categorias.size()}) *" />
+                                                <p:selectOneMenu id="categoria" value="#{produtoCDI.produto.id_categoria}"  style="width:350px">
+                                                    <f:selectItem itemLabel="Selecione o material" itemValue="0" />
+                                                    <f:selectItems value="#{categoriaCDI.categorias}" var="categoria" itemLabel="#{categoria.nome}" itemValue="#{categoria.id}" />
+                                                    <p:ajax event="change" listener="#{categoriaCDI.listar_Umacategoria(produtoCDI.produto.id_categoria)}"/>
+                                                </p:selectOneMenu>
+                                                <p:tooltip id="toolTipFocus6" for="categoria"  value="Insira a categoria do produto" showEffect="clip"/>
+
+
+                                                <p:outputLabel for="referencia" value="Categoria/Referência *" />
+
+                                                <p:selectOneMenu id="referencia" value="#{produtoCDI.produto.referencia}" style="width:250px">
+                                                    <f:selectItem itemLabel="Papel" itemValue="Papel" />
+                                                    <f:selectItem itemLabel="Papel-Cadernos" itemValue="Papel-Cadernos" />                                                    
+                                                    <f:selectItem itemLabel="Escrita-Esferograficas" itemValue="Escrita-Esferograficas" />                                                    
+
+                                                    <f:selectItem itemLabel="Impressao-Impressoras" itemValue="Impressao-Impressoras" />                                                    
+                                                    <f:selectItem itemLabel="Impressao-Tinteiros" itemValue="Impressao-Tinteiros" />                                                    
+                                                    <f:selectItem itemLabel="Impressao-Toners" itemValue="Impressao-Toners" />   
+
+                                                    <f:selectItem itemLabel="Arquivo-Pastas" itemValue="Arquivo-Pastas" />                                                    
+                                                    <f:selectItem itemLabel="Capas-Bolsas" itemValue="Capas-Bolsas" />                                                    
+                                                    <f:selectItem itemLabel="Arquivo-Classificadores" itemValue="Arquivo-Classificadores" />  
+
+                                                    <f:selectItem itemLabel="Escritorio-agrafadores" itemValue="Escritorio-agrafadores" />                                                    
+                                                    <f:selectItem itemLabel="Arquivo-Capas-Bolsas" itemValue="Arquivo-Capas-Bolsas" />                                                    
+                                                    <f:selectItem itemLabel="Envelopes" itemValue="Escritorio-Correspondencia" />  
+
+
+
+                                                    <f:selectItem itemLabel="Outra" itemValue="Outra" />   
+
+                                                </p:selectOneMenu>
+
+                                                <p:tooltip id="toolTipFocus2" for="referencia"  value="Crie uma referência do material" showEffect="clip"/>
+
+                                                <p:outputLabel for="quantidade" value="Quantidade"  />
+                                                <p:spinner id="quantidade" size="6" value="#{produtoCDI.produto.quantidade}" required="true" requiredMessage="A quantidade do produto é obrigatório."   min="1" style="width:100px"/>
+                                                <p:tooltip id="toolTipFocus4" for="quantidade"  value="Insira a quantidade do produto" showEffect="clip"/>
+
+                                                <p:outputLabel for="obs" value="Observação *"  />
+                                                <p:inputTextarea id="obs" value="#{produtoCDI.produto.obs}" autoResize="true" style="width:250px"/>
+                                                <p:tooltip id="toolTipFocus8" for="obs"  value="Insira aqui alguma observação se for necessário" showEffect="clip"/>
+
+                                            </h:panelGrid>
+
+                                        </p:tab>
+
+                                        <p:tab id="contratotab5" title="Confirmação dos dados">
+                                            <p:separator/>
+                                            <h:panelGrid columns="2">
+
+                                                <p:outputLabel value="Referência : "/>
+                                                <p:outputLabel value="#{produtoCDI.produto.referencia}"/>
+
+                                                <p:outputLabel value="Categoria : "/>
+                                                <p:outputLabel value="#{categoriaCDI.categoria.nome}"/>
+
+                                                <p:outputLabel value="Preço unitário : "/>
+
+                                                <p:inplace id="ajax" editor="true">
+                                                    <p:outputLabel id="precoid" value="€#{categoriaCDI.categoria.preco} (editável)"/>
+                                                    <p:inputText value="#{categoriaCDI.categoria.preco}" label="text" />
+                                                    <p:ajax event="save" listener="#{categoriaCDI.alterar_Preco()}" update="precoid" process="@this" />
+                                                </p:inplace>
+
+                                                <p:outputLabel value="Quantidade : "/>
+                                                <p:outputLabel value="#{produtoCDI.produto.quantidade}"/>
+
+
+                                                <p:outputLabel value="Modelo : "/>
+                                                <p:outputLabel value="#{categoriaCDI.categoria.modelo}"/>
+
+
+                                                <p:outputLabel value="Fornecedor : "/>
+                                                <p:outputLabel value="#{categoriaCDI.categoria.fornecedor}"/>
+
+
+                                                <p:outputLabel value="Adicionar uma imagem : " style="color: darkblue"/>
+
+                                                <h:inputFile id="file" label="imagem" value="#{produtoCDI.part}" size="60" /> 
+
+
+                                                <p:outputLabel value=""/>
+                                                <p:outputLabel rendered="#{produtoCDI.fileName != 'N'}" value="Nome da imagem adicionada: #{produtoCDI.fileName}" style="color: green"/>
+
+                                                <p:spacer width="10"/>
+
+                                            </h:panelGrid>
+
+                                            <h:panelGrid columns="2" >
+
+                                                <h:commandButton value="Guardar" id="btguardar1"  
+                                                                 actionListener="#{produtoCDI.salvar(login.local)}" 
+                                                                 class="btn btn-primary"/>
+
+                                                <h:commandButton value="Cancelar" id="btcancelar1" 
+                                                                 actionListener="#{produtoCDI.concluir()}" 
+                                                                 class="btn"/>
+
+                                            </h:panelGrid>
+
+                                            <p:separator/>
+                                        </p:tab>
+                                    </p:wizard>
+                                    <p:separator/>
+
+
+
+                                    <a href="index_adm.xhtml" title="Voltar a página principal">
+                                        <img src="img/home.png" width="32" height="32" alt="clip"/>
+                                    </a>
+
+                                    <a href="novoProduto.xhtml" title="Adicionar um novo produto no estoque">
+                                        <img src="img/add.png" width="32" height="32" alt="clip"/>
+                                    </a>
+
+                                    <a href="produtos.xhtml" title="Visualizar">
+                                        <img src="img/table-next-icon.png" width="32" height="32" alt="clip" border="2"/>
+                                    </a>
+
+                                </div></div></div>
+                            </h:form>
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-4">
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
+        </div>
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
+

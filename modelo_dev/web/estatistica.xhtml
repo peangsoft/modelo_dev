@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head.xhtml" />
+
+    <h:body class="background-dark">
+
+        <!-- FIM DO MENU -->
+        <div class="wrap">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+
+
+                <div class="row">
+                    <div class="col-md-10">
+
+                        <h:form>
+
+                            <p:panel id="basic" header="Estatisticas importantes do Sistema de contratos" style="margin-bottom:20px">
+
+                                <p:panelGrid columns="1">
+                                </p:panelGrid>
+
+                                <p:separator/>
+
+                                <p:panelGrid columns="2">
+
+                                    <p:chart type="bar" model="#{graficosCDI.contratoGeral}" style="height:300px"/>
+                                </p:panelGrid>
+
+                                <br/>
+                                <a href="index.xhtml" title="Voltar nos contratos">
+                                    <img src="img/Back.png" width="32" height="32" alt="clip"/>
+                                </a>
+                            </p:panel>
+
+
+                        </h:form>
+                    </div>
+                    <div class="col-md-4">
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+
+
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
+

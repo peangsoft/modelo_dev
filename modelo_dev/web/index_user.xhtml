@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head.xhtml" />
+
+
+    <h:body>
+        <!-- FIM DO MENU -->
+        <f:event listener="#{requisicaoCDI.listar_requisicao_user(login.email)}" type="preRenderView"/>
+        <f:event listener="#{sugestaoCDI.listar_Sugestao_requerente(login.email)}" type="preRenderView"/>
+        
+         <div class="wrap" style="font-family: tahoma;font-size:11px">
+
+            <ui:include src="perfil_user.xhtml" />
+
+            <div class="content container" >
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h:form id="frm_principal">
+                            
+                            <div class="panel panel-primary">
+                               
+                                <div class="panel-body" align="center">
+
+                                    <p align="right"> <a href="javascript:window.history.go(-1)" title="Voltar a página anterior" >
+                                            <img src="img/forward-icon.png" width="32" height="32" alt="clip"/>
+                                        </a>
+                                    </p>
+
+                                    <div class="table-responsive">
+                                        <img src="img/office.jpg" width="449" height="270" alt="office"/>                                       
+                                    </div>
+
+                                    <p:separator/>
+                                    <p:panel toggleable="true" collapsed="true" toggleOrientation="vertical">
+                                        <f:facet name="header" >
+                                            <p:outputLabel value="INFORMAÇÕES" style="font-family: serif;font-size: x-large;color: #297f98"/>
+                                        </f:facet>
+
+                                        <p align="left">1. Economato System é um sistema que permite requisitar qualquer mateial de ecritório existente no stock da MDS</p>
+                                        <p align="left">2. É importante que o funcionário esteja previamente registado no domínio de email da MDS.</p>
+                                        <p align="left">3. Todos os pedidos serão registados e confirmados com um email.</p>
+                                        <p align="left">4. Qualquer erro na aplicação deve ser reportado para equipa de suporte da MDS (suporte@mdsinsure.com)</p>
+                                        <p align="left">5. É de inteira responsabilidade do funcionário gerir suas requisições (mantenha a aplicação fechada após utilização).</p>
+
+                                    </p:panel>
+
+                                </div>
+
+                            </div>              
+                        </h:form>
+
+                    </div>                 
+                </div>
+            </div>
+
+        </div>
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
+

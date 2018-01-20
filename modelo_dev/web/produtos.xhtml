@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head_adm.xhtml" />
+
+    <h:body class="background-dark">
+
+        <!-- FIM DO MENU -->
+        <f:event listener="#{produtoCDI.listar_produto(login.local)}" type="preRenderView"/>
+
+
+        <div class="wrap" style="font-family: tahoma;font-size:11px">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:form id="frm2">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Visualizar/Editar os produtos em stock</div>
+                                <div class="panel-body">
+
+                                    <div class="table-responsive">
+
+                                        <p:messages id="msg" showDetail="true" autoUpdate="true"/>
+
+                                        <p:contextMenu for="tabelaProdutos">
+                                            <p:menuitem value="Ver" icon="ui-icon-search" oncomplete="PF('documentDialog').show()"/>
+                                            <p:menuitem value="Eliminar"  update="tabelaProdutos" icon="ui-icon-close"/>
+                                        </p:contextMenu>
+
+                                        <p:dataTable value="#{produtoCDI.produtos}" 
+                                                     var="produto" paginator="true" rows="10"
+                                                     rowsPerPageTemplate="10,15,20,30,50" 
+                                                     emptyMessage="Não há dados"
+                                                     paginatorPosition="bottom" id="tabelaProdutos" 
+                                                     widgetVar="tabelaProdutos"
+                                                     editable="true" class="table-responsive"
+                                                     style="font-family: tahoma;font-size:11px">
+
+                                            <f:facet name="header">
+
+                                                <p:commandButton id="toggler" type="button" value="Campos" style="float:right" icon="ui-icon-calculator"  />
+                                                <p:columnToggler datasource="tabelaProdutos" trigger="toggler" />
+
+                                                <p:outputPanel style="float:left">
+                                                    <h:outputText value="Procurar na tabela: " />
+                                                    <p:inputText id="globalFilter" onkeyup="PF('tabelaProdutos').filter()" style="width:170px" placeholder="Palavra chave"/>
+                                                </p:outputPanel>
+
+                                                <p:panelGrid columns="2">               
+                                                    <h:commandLink title="Tudo">
+                                                        <p:graphicImage value="img/logoPdf.png" height="32" width="32"  />                                 
+                                                        <p:dataExporter type="pdf" target="tabelaProdutos" fileName="Produtos em Stock"  />
+                                                    </h:commandLink>
+
+                                                    <h:commandLink title="Tudo">
+                                                        <p:graphicImage value="img/logoxls.png" height="32" width="32"  />                                 
+                                                        <p:dataExporter type="xls" target="tabelaProdutos" fileName="Produtos em Stock" />
+                                                    </h:commandLink>
+
+                                                </p:panelGrid>
+
+                                            </f:facet>
+
+                                            <p:ajax event="rowEdit" listener="#{produtoCDI.alterar_qtd_produto(produto.id, produto.quantidade, produto.referencia, produto.obs, produto.categoria.id, produto.categoria.preco)}"/>
+                                            <p:ajax event="rowEditCancel" listener="#{produtoCDI.cancelar_alterar_qtd_produto()}" />
+
+
+                                            <p:column style="background-color: white" headerText="Categoria/Palavra chave" filterBy="#{produto.referencia}" filterMatchMode="contains">
+
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{produto.referencia}" /></f:facet>
+
+                                                    <f:facet name="input">
+
+                                                        <p:selectOneMenu id="referencia" value="#{produto.referencia}" style="width:180px">
+
+                                                            <f:selectItem itemLabel="#{produto.referencia}" itemValue="#{produto.referencia}" />
+
+                                                            <f:selectItem itemLabel="Papel" itemValue="Papel" />
+                                                            <f:selectItem itemLabel="Papel-Cadernos" itemValue="Papel-Cadernos" />                                                    
+                                                            <f:selectItem itemLabel="Escrita-Esferograficas" itemValue="Escrita-Esferograficas" />                                                    
+
+                                                            <f:selectItem itemLabel="Impressao-Impressoras" itemValue="Impressao-Impressoras" />                                                    
+                                                            <f:selectItem itemLabel="Impressao-Tinteiros" itemValue="Impressao-Tinteiros" />                                                    
+                                                            <f:selectItem itemLabel="Impressao-Toners" itemValue="Impressao-Toners" />   
+
+                                                            <f:selectItem itemLabel="Arquivo-Pastas" itemValue="Arquivo-Pastas" />                                                    
+                                                            <f:selectItem itemLabel="Capas-Bolsas" itemValue="Capas-Bolsas" />                                                    
+                                                            <f:selectItem itemLabel="Arquivo-Classificadores" itemValue="Arquivo-Classificadores" />
+
+                                                            <f:selectItem itemLabel="Escritorio-agrafadores" itemValue="Escritorio-agrafadores" />                                                    
+                                                            <f:selectItem itemLabel="Arquivo-Capas-Bolsas" itemValue="Arquivo-Capas-Bolsas" />                                                    
+                                                            <f:selectItem itemLabel="Envelopes" itemValue="Escritorio-Correspondencia" />  
+
+                                                            <f:selectItem itemLabel="Outra" itemValue="Outra" />   
+
+                                                        </p:selectOneMenu>
+                                                    </f:facet>
+                                                </p:cellEditor>
+
+                                            </p:column>
+
+                                            <p:column style="background-color: white" headerText="Artigo" filterBy="#{produto.categoria.nome}" filterMatchMode="contains" width="30%">
+                                                <p:commandLink update=":frm2:detalhe1" oncomplete="PF('dlg2').show()" title="Clique para ver detalhes do artigo" >
+                                                    <p:outputLabel value="#{produto.categoria.nome}" id="content" style="font-family: tahoma;color: dodgerblue"/>
+                                                    <f:setPropertyActionListener value="#{produto}" target="#{produtoCDI.PRODUTO}" />
+                                                </p:commandLink>
+                                                <p:tooltip id="toolTipContent" for="content" >
+                                                    <img src="abreimagem?id=#{produto.id}" width="120" height="128" alt="Sem imagem"/>
+                                                </p:tooltip>
+                                            </p:column>
+
+                                            <p:column style="background-color: white" headerText="Imagem" id="btimagem" exportable="false">
+                                                <img src="abreimagem?id=#{produto.id}" width="48" height="42" alt="Sem imagem" />                                                     
+                                            </p:column>
+
+                                            <p:column style="background-color: white" headerText="Qtde." filterMatchMode="lte">
+
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{produto.quantidade}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{produto.quantidade}" style="width:96%" label="Quantidade"/></f:facet>
+                                                </p:cellEditor>
+
+                                            </p:column>
+
+                                            <p:column style="background-color: white" headerText="Preço Unit." >
+
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{produto.categoria.preco}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{produto.categoria.preco}" style="width:96%" label="Preço"/></f:facet>
+                                                </p:cellEditor>
+
+
+                                            </p:column>
+
+
+                                            <p:column  style="background-color: white" headerText="Modelo" filterBy="#{produto.categoria.modelo}" filterMatchMode="contains">
+                                                <h:outputText value="#{produto.categoria.modelo}"/>
+                                            </p:column>
+
+                                            <p:column style="background-color: white" width="6%" exportable="false">
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Ação1"/>
+                                                </f:facet>
+                                                <p:rowEditor  />
+                                            </p:column>
+
+                                            <p:column style="background-color: white" width="6%" exportable="false">
+
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Ação2"/>
+                                                </f:facet>
+                                                <p:commandButton icon="ui-icon-trash" style="background-color: transparent" actionListener="#{produtoCDI.tirar_produto_estoque(produto.id)}" update=":frm2:msg,tabelaProdutos">
+                                                    <p:confirm header="Confirmação" message="Tem certeza que deseja retirar o produto do estoque?"  icon="ui-icon-alert" />
+                                                </p:commandButton> 
+
+                                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                </p:confirmDialog>
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                        <p:panelGrid columns="2">
+                                            <h:commandLink title="Página atual apenas">
+                                                <p:graphicImage value="img/logoPdf.png" height="32" width="32"  />                                 
+                                                <p:dataExporter type="pdf" target="tabelaProdutos" fileName="Produtos em Stock" pageOnly="true"/>
+                                            </h:commandLink>
+
+                                            <h:commandLink title="Página atual apenas">
+                                                <p:graphicImage value="img/logoxls.png" height="32" width="32"  />                                 
+                                                <p:dataExporter type="xls" target="tabelaProdutos" fileName="Produtos em Stock" pageOnly="true" />
+                                            </h:commandLink>
+
+                                        </p:panelGrid>
+
+                                        <p:separator/>
+
+                                        <a href="index_adm.xhtml" title="Voltar na página anterior">
+                                            <img src="img/home.png" width="32" height="32" alt="clip"/>
+                                        </a>
+
+                                        <a href="novoProduto.xhtml" title="Inserir um novo produto">
+                                            <img src="img/add.png" width="32" height="32" alt="add"/>
+                                        </a>
+
+                                    </div></div></div> 
+
+                            <p:dialog header="Imagem do artigo" widgetVar="dlg1" modal="true" height="150" width="180">
+                                <h:panelGrid columns="1" id="detalhe">                        
+                                    <img src="abreimagem?id=#{produtoCDI.ID}" width="148" height="148" alt="Sem imagem" align="center"/>
+                                </h:panelGrid>
+                            </p:dialog>
+
+                            <p:dialog header="Detalhe do artigo" id="detalhe1" widgetVar="dlg2" modal="true" height="350" width="480">
+                                <h:panelGrid columns="1">
+                                    <img src="abreimagem?id=#{produtoCDI.PRODUTO.id}" width="100" height="100" alt="Sem imagem" align="center"/>
+                                </h:panelGrid>
+                                <p:panelGrid columns="2" >                        
+                                    <p:outputLabel value="Artigo: "/>
+                                    <p:outputLabel value="#{produtoCDI.PRODUTO.categoria.nome}"/>
+
+                                    <p:outputLabel value="Modelo: "/>
+                                    <p:outputLabel value="#{produtoCDI.PRODUTO.categoria.modelo}"/>
+
+                                    <p:outputLabel value="Preço Unitário: "/>
+                                    <p:outputLabel value="#{produtoCDI.PRODUTO.categoria.preco}"/>
+
+                                    <p:outputLabel value="Quantidade: "/>
+                                    <p:outputLabel value="#{produtoCDI.PRODUTO.quantidade}"/>
+
+
+                                    <p:outputLabel value="Fornecedor: "/>
+                                    <p:outputLabel value="#{produtoCDI.PRODUTO.categoria.fornecedor}"/>
+
+
+                                    <p:outputLabel value="Observação: "/>
+                                    <p:outputLabel value="#{produtoCDI.PRODUTO.obs}"/>
+
+                                </p:panelGrid>
+
+
+                            </p:dialog>
+
+                        </h:form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
+

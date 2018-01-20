@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head_adm.xhtml" />
+
+
+    <h:body >
+        <!-- FIM DO MENU -->
+        <f:metadata>
+            <f:viewParam name="local" value="#{utilizadorCDI.tag}" /> 
+        </f:metadata>
+
+        <f:event listener="#{utilizadorCDI.redirecionar_local()}" type="preRenderView"/>      
+        <f:event listener="#{requisicaoCDI.listar_requisicao(login.idlocal)}" type="preRenderView"/>
+        <f:event listener="#{sugestaoCDI.listar_Sugestao()}" type="preRenderView"/>
+
+        <div class="wrap" style="font-family: tahoma;font-size:11px">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h:form id="frm_principal">
+                            <div class="panel panel-primary">                  
+                                <div class="panel-body" align="center">
+
+                                    <p align="right"> <a href="javascript:window.history.go(1)" title="Voltar a página anterior" >
+                                            <img src="img/forward-icon.png" width="32" height="32" alt="clip"/>
+                                        </a>
+                                    </p>
+
+                                    <div class="table-responsive">
+                                        <img src="img/office.jpg" width="449" height="270" alt="office"/>                                       
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                        </h:form>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </h:body>
+
+</html>
+

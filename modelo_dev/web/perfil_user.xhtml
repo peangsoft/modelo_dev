@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <f:event listener="#{requisicaoCDI.listar_requisicao_user(login.email)}" type="preRenderView"/>
+    <f:event listener="#{sugestaoCDI.listar_Sugestao_requerente(login.email)}" type="preRenderView"/>
+    <header class="page-header">
+
+        <f:event listener="#{requisicaoCDI.listar_requisicao_user(login.email)}" type="preRenderView"/>
+        <f:event listener="#{sugestaoCDI.listar_Sugestao_requerente(login.email)}" type="preRenderView"/>
+        <div class="content container">
+        <nav class="navbar navbar-inverse" style="background-color: #009fdf">
+            <div class="container-fluid">                
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index_user.xhtml">Home</a></li>
+                    <li><a href="homeRequisicao.xhtml">Requisitar</a></li>
+                    <li><a href="sugestao_user.xhtml">(#{sugestaoCDI.sugestaos.size()}) Sugestões</a></li>
+                    <li><a href="pedidos_user.xhtml">(#{requisicaoCDI.requisicaes.size()})Respostas</a></li>
+                    <li><a href="pedidos_user_pendente.xhtml">(#{requisicaoCDI.requisicaes1.size()})Pendentes</a></li>
+                    <li><a href="perfileditar.xhtml?user=#{login.email}">Ver/Editar Perfil</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="carrinho.xhtml">
+                            Carrinho
+                            (#{requisitandoCDI.qtd_carrinho()})
+
+                        </a>
+                    </li>
+
+
+                    <li><a href="perfileditar.xhtml?user=#{login.email}">
+                            <span class="glyphicon glyphicon-user"></span>
+                            #{login.user.toUpperCase()} (#{login.local})
+                        </a>
+                    </li>
+                    <li>
+                        <a href="login.xhtml" title="Sair da aplicação" target="_blank" onclick = "window.location = 'https://www.google.com/accounts/Logout'; startLogoutPolling();return false;" >
+                            <span class="glyphicon glyphicon-log-in"></span> 
+                            Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+       </div>     
+    
+    </header>
+
+    <script>
+
+        function startLogoutPolling() {
+            console.log("startLogoutPolling");
+            loggedIn = false;
+            alert("Sessão terminada com sucesso!");
+
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+
+
+
+        }
+    </script>
+</ui:composition>       

@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head.xhtml" />
+
+    <h:body class="background-dark">
+
+        <f:metadata>
+            <f:viewParam name="contratoId" value="#{contratoCDI.contrato.ID}" />
+        </f:metadata>
+        <!-- FIM DO MENU -->
+        <f:event listener="#{contratoCDI.listaUmContrato}" type="preRenderView"/>
+        <f:event listener="#{anexarFicheiroCDI.listarAnexos(contratoCDI.contrato.ID)}" type="preRenderView"/>
+        <f:event listener="#{signatarioCDI.listaSignatarios_contrato(contratoCDI.contrato.ID)}" type="preRenderView"/>
+        
+        <f:event listener="#{contratoCDI.listaClientes}" type="preRenderView"/>
+        <f:event listener="#{fornecedorCDI.listaFornecedor}" type="preRenderView"/>
+
+
+
+        <div class="wrap">
+            <ui:include src="perfil.xhtml" />
+
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <p:panel header="Detalhe do contrato (Editável)">
+                            <h:form id="frmdetalhecontrato">
+                                <p:messages showDetail="true" autoUpdate="true" />
+
+                                <p:layout style="min-width:450px;min-height:450px;">
+                                    <p:layoutUnit position="west" resizable="true" size="400" minSize="300" maxSize="500">
+                                        <h:panelGrid columns="2" columnClasses="column" cellpadding="5" >
+                                            <h:outputLabel for="nomec" value="Contrato : " />
+                                            <p:inplace id="nomec">
+                                                <p:inputText value="#{contratoCDI.contrato.desc}"  />
+                                            </p:inplace>
+
+                                            <h:outputLabel for="valor" value="Valor do contrato : " />
+                                            <p:inplace id="valor" >
+                                                <p:inputText value="#{contratoCDI.contrato.valor_total}"  />
+                                            </p:inplace>
+
+                                            <h:outputLabel for="datai" value="Data de Inicio : " />
+                                            <p:inplace id="datai" >
+                                                <p:inputText value="#{contratoCDI.contrato.data_string_inic}"  />
+                                            </p:inplace>
+
+
+                                            <h:outputLabel for="dataf" value="Data de Fim :" />
+                                            <p:inplace id="dataf" >
+                                                <p:inputText value="#{contratoCDI.contrato.data_string_fim}"  />
+                                            </p:inplace>
+
+
+                                            <h:outputLabel for="dataf" value="Estado :" />
+                                            <p:inplace id="estado" >
+                                                <p:inputText value="#{contratoCDI.contrato.estado}"  />
+                                            </p:inplace>
+
+
+                                            <h:outputLabel for="tipo" value="Tipo de contrato :" />
+                                            <p:inplace id="tipo" >
+                                                <p:inputText value="#{contratoCDI.contrato.tipo}"  />
+                                            </p:inplace>
+
+
+                                            <h:outputLabel for="prazo" value="Prazo de renovação(mêses) :" />
+                                            <p:inplace id="prazo" >
+                                                <p:inputText value="#{contratoCDI.contrato.prazo_renovovacao}"  />
+                                            </p:inplace>
+
+
+                                            <h:outputLabel value="Regime de renovação :" />
+                                            <p:inplace id="regime" >
+                                                <p:inputText value="#{contratoCDI.contrato.regime_renocacao}"  />
+                                            </p:inplace>
+
+                                            <h:outputLabel value="Empresa MDS :" />
+                                            
+                                            <p:inplace id="cliente" >
+                                                
+                                                <p:selectOneMenu value="#{contratoCDI.contrato.clienteID}" effect="fold" id="clienteID" editable="true" >
+                                                  
+                                                    <f:selectItems value="#{contratoCDI.clientes}" var="cliente" itemLabel="#{cliente.nome}" itemValue="#{cliente.ID}"/>
+                                                </p:selectOneMenu>
+                                            </p:inplace>
+
+                                            
+                                            <h:outputLabel  value="Periodicidade :" />
+                                            <p:inplace id="periocidade" >
+                                                <p:inputText value="#{contratoCDI.contrato.periocidade}"  />
+                                            </p:inplace>
+
+                                            <h:outputLabel  value="Registo de Denúncia :" />
+                                            <p:inplace id="registo_denuncia" >
+                                                <p:inputText value="#{contratoCDI.contrato.registo_denuncia}"  />
+                                            </p:inplace>
+
+                                            <h:outputLabel  value="Pré-aviso de Denúncia :" />
+                                            <p:inplace id="pre_aviso_denuncia" >
+                                                <p:inputText value="#{contratoCDI.contrato.pre_aviso_denuncia}"  />
+                                            </p:inplace>
+
+
+                                        </h:panelGrid>
+
+                                        <br/>
+                                        <br/>
+                                        <p:commandButton  id="btguardar1" actionListener="#{contratoCDI.alterar}" style="display: none"/>
+
+                                        <button type="submit" id="frmdetalhecontrato:btguardar1" name="frmdetalhecontrato:btguardar1" class="btn btn-primary btn-lg">
+                                            Guardar alteração
+                                        </button>
+                                    </p:layoutUnit>
+
+                                    <p:layoutUnit position="center">
+
+                                        <p:panel>
+                                            Anexos do contrato
+                                            <br/>
+                                            <p:dataTable value="#{anexarFicheiroCDI.anexos_}" 
+                                                         var="anexo" 
+                                                         paginator="true" 
+                                                         rows="5"
+                                                         rowsPerPageTemplate="5,10,15" 
+                                                         emptyMessage="Não há Anexos neste documento"
+                                                         paginatorPosition="bottom" 
+                                                         id="tabelaAnexos"
+                                                         widgetVar="tabelaAnexos" >
+
+
+                                                <p:column headerText="Documento" >
+                                                    <a href="anexo?id=#{anexo.ID}" target="_blank">
+                                                        #{anexo.nome}
+                                                    </a>
+                                                </p:column>
+
+                                                <p:column width="25%">
+
+                                                    <p:commandButton value="Exluir" id="btexcluir" actionListener="#{anexarFicheiroCDI.excluirAnexo(contratoCDI.contrato.ID, anexo.ID)}" ajax="false" style="background-color: #FF6600" title="Eliminar o anexo" />
+                                                </p:column>
+
+                                            </p:dataTable>
+
+                                            <a href="anexardoc.xhtml?contratoId=#{contratoCDI.contrato.ID}" title="Anexar documentos">
+                                                <img src="img/add.png" width="32" height="32" alt="clip"/>
+                                            </a>
+
+                                        </p:panel>
+
+                                        <p:panel>
+                                            Signatários do contrato
+                                            <br/>
+                                            <p:dataTable value="#{signatarioCDI.signatarios2}" 
+                                                         var="signatario1" 
+                                                         rows="3"
+                                                         emptyMessage="Não há signatarios neste contrato" 
+                                                         id="tabelaSignatarios"
+                                                         widgetVar="tabelaSignatarios" >
+
+
+                                                <p:column headerText="Signatários" >
+
+                                                    <a href="detalheSignatario.xhtml?signatarioId=#{signatario1.id}" >
+                                                        #{signatario1.nome}
+                                                    </a>
+
+
+                                                </p:column>
+
+                                                <p:column width="30%">
+
+                                                    <p:commandButton value="Remover" id="btexcluir" actionListener="#{signatarioCDI.excluirAOcontrato(signatario1.id, contratoCDI.contrato.ID)}" ajax="false" style="background-color: #FF6600" title="Remover o Signatário do contrato" />
+                                                </p:column>
+
+                                            </p:dataTable>
+                                            <a href="adicionarSigcontrato.xhtml?contratoId=#{contratoCDI.contrato.ID}" title="Anexar documentos">
+                                                <img src="img/add.png" width="32" height="32" alt="clip"/>
+                                            </a>
+                                        </p:panel>
+
+
+                                    </p:layoutUnit>
+                                </p:layout>
+
+                            </h:form>
+                            <a href="javascript:window.history.go(-1)" title="Voltar a página anterior">
+                                    <img src="img/Back.png" width="32" height="32" alt="clip"/>
+                                </a>
+                        </p:panel>
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-4">
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
+        </div>
+
+
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
+

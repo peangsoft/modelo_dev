@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:include src="head.xhtml" />
+   
+    <f:event listener="#{utilizadorCDI.NOME_departamentos()}" type="preRenderView"/>
+     <f:event listener="#{utilizadorCDI.NOME_locais()}" type="preRenderView"/>
+
+    <h:body class="background-dark">
+
+        <!-- FIM DO MENU -->
+        <div class="wrap">
+            <ui:include src="perfil_user.xhtml" />
+
+            <div class="content container">
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <p:panel id="panel" style="background-color: orangered" header="
+                                 O Sistema detectou que é a primeira vez que entra ou que não está registado, 
+                                 e para fazer qualquer requisição de estar previamente registado" 
+                                 >
+                            <h:form id="frm">
+                                <p:growl id="growl" showDetail="false" sticky="false" life="2500"/>
+
+                                <p:panel header="Registar-se no sistema">
+                                    <p:messages showDetail="true" />
+                                    <p:panelGrid columns="2" >
+
+                                        <p:outputLabel value="Nome de utilizador:" />
+                                        <h:outputLabel value="#{login.user}"  />
+
+
+                                        <h:outputLabel value="Email:" />                                 
+                                        <h:outputLabel value="#{login.email}" />
+
+                                        <p:outputLabel value="Departamento" />
+                                        <p:selectOneMenu value="#{utilizadorCDI.utilizador.departamento}" id="periocidade" effect="fold" editable="true">
+                                            <f:selectItem itemLabel="#{utilizadorCDI.utilizador.departamento}"  itemValue="#{utilizadorCDI.utilizador.departamento}" />
+                                            <f:selectItems value="#{utilizadorCDI.departamentos}" />
+                                        </p:selectOneMenu>
+                                        
+                                        <p:outputLabel value="Local" />
+                                        <p:selectOneMenu value="#{utilizadorCDI.utilizador.local}" id="local" effect="fold" editable="false">
+                                            <f:selectItem itemLabel="#{utilizadorCDI.utilizador.local}"  itemValue="#{utilizadorCDI.utilizador.local}" />
+                                            <f:selectItems value="#{utilizadorCDI.locais}" />
+                                        </p:selectOneMenu>
+
+                                    </p:panelGrid>
+
+                                    <p:separator/>
+                                    <p:commandButton value="Guardar" actionListener="#{utilizadorCDI.salvar('U')}" update="growl"/>
+                                </p:panel>
+
+                            </h:form>
+
+                        </p:panel>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <ui:include src="js_library.html" />
+
+    </h:body>
+
+
+</html>
