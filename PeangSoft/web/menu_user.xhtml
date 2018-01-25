@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:body class="background-dark">
+
+        <h:form id="frm_user">
+            <div class="col-md-4">
+                
+                <div class="row">
+                    
+                </div>
+                
+                <div class="row">
+
+                    <p:stack icon="/img/Very-Basic-Menu-icon.png" expanded="true">
+                        <p:menuitem value="Home" icon="/img/Home-icon.png" url="index_user.xhtml"/>
+                        
+                        <p:menuitem value="Requisitar" icon="/img/cesto_vazio.png" url="homeRequisicao.xhtml"/>
+                        
+                        <p:menuitem value="Sugestões (#{sugestaoCDI.sugestaos.size()})" icon="/img/help-desk-icon.png" url="sugestao_user.xhtml"/> 
+
+                        <p:menuitem value="Respostas (#{requisicaoCDI.requisicaes.size()})" title="Lista de todos os meus pedidos respondidos" icon="/img/Messaging-Response-icon.png" url="pedidos_user.xhtml"/>
+                        
+                        <p:menuitem value="Pendentes (#{requisicaoCDI.requisicaes1.size()})" title="Lista de todos os meus pedidos pendentes" icon="/img/question-icon.png" url="pedidos_user_pendente.xhtml"/>
+
+                    </p:stack>
+                </div>
+            </div>
+
+        </h:form>
+
+    </h:body>  
+</ui:composition>
