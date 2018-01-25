@@ -7,74 +7,74 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <ui:include src="head_login.xhtml" />
-    <f:event listener="#{login.terminar_utilizador()}" type="preRenderView"/>
 
-    <h:body style="align-content: center">
-        <br/> <br/><br/>
-        <div class="content container" style="width: 70%">
-            <div class="wrap" style="font-family: tahoma" >
+    <h:body> 
 
-                <div class="panel panel-primary">                                   
-                    <div class="panel-body" align="center">
-                        <div class="table-responsive">
-                            <div class="single-widget-container">
-                                <section class="widget login-widget">
-                                    <header class="text-align-center">
-                                        <img src="img/logo_MDS.png" width="91" height="91" alt="logo_MDS"/>
-                                        <h4>Entrar com a sua conta mdsinsure.com</h4>
-                                    </header>
-                                    <div class="body">
-                                        <h:form class="no-margin" id="frmlogin">
+        <div class="single-widget-container">
+            <section class="widget login-widget">
+                <header class="text-align-center">
+                    <h4>Entrar na sua conta</h4>
+                </header>
+                <div class="body">
 
-                                            <iframe name='myIFrame' id="myIFrame" style='display:none'></iframe>
-                                            <p:growl id="growl" showDetail="false" sticky="true" life="2500"/>
+                    <h:form class="no-margin" id="frmlogin">
+                        <p:growl id="growl" showDetail="false" sticky="true" />
+                        <fieldset>
+                            <div class="form-group no-margin">
+                                <label for="email" >Utilizador</label>
 
-                                            <div class="form-actions">
-
-                                                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" align="center" data-width="150" data-height="40"></div>
-
-                                                <br/>
-                                                <div class="forgot">
-                                                    Problemas com autênticação?
-                                                    <a class="forgot" href="#">Contacte:suporte@mdsinsure.com</a>
-                                                </div>
-
-                                            </div>
-
-                                        </h:form>
-                                    </div>
-                                </section>
-                                <div align="center" class="animated">
-                                    <footer>
-                                        <p>
-                                            <font size="2"> &copy; |direitos reservados <a href="http://www.mdsinsure.com">MDS</a></font>
-                                        </p>
-                                    </footer>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">
+                                        <i class="eicon-user"></i>
+                                    </span>                                    
+                                    <h:inputText id="username" value="#{login.user}" size="45" title="Nome de utilizador"></h:inputText>
+                                    <h:message for="username"></h:message>
                                 </div>
-                            </div>    
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" >Senha</label>
+
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-lock"></i>
+                                    </span>                
+                                    <h:inputSecret id="password" value=""  size="45" title="Sua senha"></h:inputSecret>
+                                    <h:message for="password"></h:message>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <div class="form-actions">
+
+                            <h:commandButton id="btlogin" action="#{login.validateUsernamePassword}"
+                                             style="display: none"></h:commandButton>
+
+                            <button type="submit" id="frmlogin:btlogin" name="frmlogin:btlogin" class="btn btn-block btn-lg btn-danger">
+                                <span class="small-circle"><i class="fa fa-caret-right"></i></span>
+                                <small>Entrar</small>
+                            </button>
+
+                            <div class="forgot"><a class="forgot" href="#">Esqueceu seu nome de utilizador ou Senha?</a></div>
+                            <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                                <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
+                            </p:notificationBar>
+
+
                         </div>
-                    </div>
+                        
+                    </h:form>
                 </div>
-
+            </section>
+            <div align="center" class="animated">
+                <footer>
+                    <p>
+                        <font size="2"> &copy; |direitos reservados <a href="http://www.mdsinsure.com">MDS</a></font>
+                    </p>
+                </footer>
             </div>
-        </div>
-        <script>
-
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-
-                loggedIn = true;
-
-                // The ID token you need to pass to your backend:
-                //  var id_token = googleUser.getAuthResponse().id_token;
-                // console.log("ID Token: " + id_token);
-
-                window.location = "http://localhost:8084/economato/index.xhtml?user=" + profile.getName() + "," + profile.getImageUrl() + "," + profile.getEmail();
-            }
-
-        </script>
-
-        <f:event listener="#{login.validateUsernamePassword()}" type="postValidate"/>
+        </div>    
 
     </h:body>
 </html>

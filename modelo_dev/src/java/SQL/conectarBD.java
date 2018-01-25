@@ -22,10 +22,10 @@ public class conectarBD implements Serializable {
     private static String BD = "jdbc:mysql://localhost:3306/almoxarifadobd";  */
     
       //Para Local
-    private static String USERNAME = "appuser";
+    private static String USERNAME = "bila";
     
-    private static String PASSWORD = "mds.123";
-    private static String BD = "jdbc:mysql://10.197.83.140:3306/almoxarifadobd";
+    private static String PASSWORD = "Jesus123*";
+    private static String BD = "jdbc:mysql://localhost:3306/almoxarifadobd";
     
     private static Driver MM_driver; static Connection conn;
     
